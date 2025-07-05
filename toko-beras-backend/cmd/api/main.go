@@ -46,14 +46,21 @@ func main() {
 
 	// Grup rute untuk API utama (Terproteksi)
 	apiRoutes := router.Group("/api")
+
 	apiRoutes.GET("/products", productHandler.GetAllProducts)
 	apiRoutes.Use(middleware.AuthMiddleware())
 	{
-		// Rute untuk Produk
-		apiRoutes.POST("/products", productHandler.CreateProduct)
-
 		// Rute untuk Order
 		apiRoutes.POST("/orders", orderHandler.CreateOrder)
+	}
+
+	// Grup rute untuk Admin (Terproteksi)
+	adminRoutes := router.Group("/admin")
+	adminRoutes.Use(middleware.AuthMiddleware()) // Middleware tetap digunakan di sini
+	{
+		// Hanya admin yang bisa menambah produk
+		adminRoutes.POST("/products", productHandler.CreateProduct)
+		// Nanti kita bisa tambahkan middleware khusus untuk memeriksa peran 'admin'
 	}
 
 	router.GET("/ping", func(c *gin.Context) {
