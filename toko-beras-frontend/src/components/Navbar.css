@@ -1,0 +1,29 @@
+/* Navbar.css */
+
+.navbar {
+  display: flex; /* Mengaktifkan Flexbox */
+  justify-content: space-between; /* Mendorong item ke ujung: item pertama ke kiri, item terakhir ke kanan */
+  align-items: center; /* Menyelaraskan item secara vertikal di tengah */
+  padding: 1rem 2rem; /* Memberi jarak dalam (atas/bawah 1rem, kiri/kanan 2rem) */
+  background-color: #ffffff; /* Memberi warna latar belakang putih */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Memberi sedikit bayangan */
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.navbar-links a {
+  margin-left: 1.5rem; /* Memberi jarak antar link */
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navbar-links a:hover {
+  color: #5b67e8; /* Warna saat cursor di atas link */
+}
