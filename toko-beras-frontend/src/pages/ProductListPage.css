@@ -1,0 +1,41 @@
+.product-page {
+  padding: 0 2rem;
+}
+
+.product-grid {
+  display: grid;
+  /* Buat kolom responsif: minimal 250px, tapi bisa membesar */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.product-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover; /* Agar gambar tidak gepeng */
+}
+
+.product-card h3,
+.product-card p {
+  margin: 0;
+  padding: 0.5rem 1rem;
+}
+
+.product-card .price {
+    font-weight: bold;
+    color: #5b67e8;
+    padding-bottom: 1rem;
+}
