@@ -37,6 +37,10 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
+	// Ini memberitahu Gin: "Jika ada permintaan ke URL yang diawali dengan /uploads,
+    // cari filenya di dalam direktori fisik ./uploads di server."
+    router.Static("/uploads", "./uploads")
+
 	// Grup rute untuk Autentikasi (Publik)
 	authRoutes := router.Group("/auth")
 	{
@@ -56,11 +60,11 @@ func main() {
 
 	// Grup rute untuk Admin (Terproteksi)
 	adminRoutes := router.Group("/admin")
-	adminRoutes.Use(middleware.AuthMiddleware()) // Middleware tetap digunakan di sini
+	adminRoutes.Use(middleware.AuthMiddleware()) // Penjaga 1: Cek dulu apakah login & token valid
+	adminRoutes.Use(middleware.AdminMiddleware())  // Penjaga 2: LALU, cek apakah dia admin
 	{
-		// Hanya admin yang bisa menambah produk
+		// Hanya admin yang bisa mengakses rute-rute ini
 		adminRoutes.POST("/products", productHandler.CreateProduct)
-		// Nanti kita bisa tambahkan middleware khusus untuk memeriksa peran 'admin'
 	}
 
 	router.GET("/ping", func(c *gin.Context) {
