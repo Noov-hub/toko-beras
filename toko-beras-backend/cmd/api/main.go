@@ -49,11 +49,15 @@ func main() {
 		authRoutes.POST("/login", authHandler.Login)
 	}
 
+	productPublicRoutes := router.Group("/api")
+	{
+		productPublicRoutes.GET("/products", productHandler.GetAllProducts)
+		productPublicRoutes.GET("/products/:id", productHandler.GetProductByID)
+	}
+
 	// Grup rute untuk API utama (Terproteksi)
 	apiRoutes := router.Group("/api")
 
-	apiRoutes.GET("/products", productHandler.GetAllProducts)
-	apiRoutes.GET("/products/:id", productHandler.GetProductByID)
 	apiRoutes.Use(middleware.AuthMiddleware())
 	{
 		// Rute untuk Order
