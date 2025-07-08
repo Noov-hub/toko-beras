@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/authApi'; // Import fungsi API
+import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +17,7 @@ function LoginPage() {
     try {
       const data = await loginUser({ email, password });
       if (data.token) {
+        login(data.token);
         alert('Login berhasil!');
         navigate('/'); // Arahkan ke Halaman Utama setelah berhasil
         // Anda bisa juga me-refresh halaman untuk memperbarui state aplikasi
@@ -44,5 +47,4 @@ function LoginPage() {
     </div>
   );
 }
-
 export default LoginPage;
