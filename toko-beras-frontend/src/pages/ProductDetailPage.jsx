@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ProductDetailPage.css';
+import { useCart } from '../context/CartContext'; 
+import { useAuth } from '../context/AuthContext';
 
 const API_URL = 'http://localhost:8080';
 // const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
@@ -12,8 +14,11 @@ function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
+  const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   useEffect(() => {
-     console.log("Mencoba mengambil data untuk ID:", id); 
     const fetchProduct = async () => {
       try {
         // TAMBAHKAN /api/ di sini
@@ -34,16 +39,26 @@ function ProductDetailPage() {
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   if (!product) return <p>Produk tidak ditemukan.</p>;
 
+  const handleAddToCart = () => {
+    if (isAuthenticated) {
+      addToCart(product);
+    } else {
+      alert('Anda harus login untuk menambahkan item ke keranjang.');
+      // Sekarang 'navigate' sudah terdefinisi dan bisa digunakan
+      navigate('/login');
+    }
+  };
   return (
     <div className="product-detail-container">
       <img src={`${API_URL}${product.image_url}`} alt={product.name} className="product-detail-image"/>
       <div className="product-detail-info">
         <h1>{product.name}</h1>
-        <p className="category">{product.category}</p>
-        <p className="price">Rp {product.price.toLocaleString('id-ID')}</p>
-        <p className="stock">Stok: {product.stock}</p>
+        {/* ... info produk lainnya */}
         <p className="description">{product.description}</p>
-        <button className="add-to-cart-btn">Tambah ke Keranjang</button>
+        {/* 6. Panggil handleAddToCart saat tombol diklik */}
+        <button className="add-to-cart-btn" onClick={handleAddToCart}>
+          Tambah ke Keranjang
+        </button>
       </div>
     </div>
   );
