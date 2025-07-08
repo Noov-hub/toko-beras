@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage'; // <-- Tambahkan import ini
 import Navbar from './components/Navbar';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/produk" element={<ProductListPage />} />
           <Route path="/produk/:id" element={<ProductDetailPage />} /> {/* <-- TAMBAHKAN INI */}
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/keranjang" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </main>
