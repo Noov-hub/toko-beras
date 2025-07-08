@@ -29,6 +29,23 @@
   margin-top: 2rem;
   text-align: right;
 }
+.remove-btn {
+  background: none;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 1rem;
+  align-self: center; /* Agar posisinya di tengah secara vertikal */
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.remove-btn:hover {
+  background-color: #ff4d4d;
+  color: white;
+}
+
 .checkout-btn {
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
