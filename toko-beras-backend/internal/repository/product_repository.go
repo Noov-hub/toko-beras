@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"toko-beras/backend/internal/model" // Sesuaikan dengan nama modul Anda
 
+	"github.com/jackc/pgx"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -55,8 +57,15 @@ func (r *ProductRepository) GetProductByID(ctx context.Context, id int) (*model.
 
 	err := r.DB.QueryRow(ctx, sql, id).Scan(&p.ID, &p.Name, &p.Description, &p.Category, &p.Price, &p.Stock, &p.ImageURL, &p.CreatedAt)
 	if err != nil {
-		return nil, err
+		// INILAH PERBAIKANNYA: Cek secara spesifik jika errornya adalah "tidak ada baris"
+		if err == pgx.ErrNoRows {
+			// Kembalikan nil untuk produk dan nil untuk error, agar handler tahu ini bukan error server
+			return nil, nil 
+		}
+		// Untuk error database lainnya, bungkus dan kembalikan
+		return nil, fmt.Errorf("repository: gagal mengambil produk by id: %w", err)
 	}
+
 	return &p, nil
 }
 
