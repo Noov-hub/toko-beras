@@ -98,10 +98,18 @@ func (h *ProductHandler) GetProductByID(c *gin.Context) {
 
 	product, err := h.ProductRepo.GetProductByID(c.Request.Context(), id)
 	if err != nil {
-		// Nanti kita bisa bedakan error 'not found' dengan error server
+		// Error ini sekarang hanya akan terjadi jika ada masalah server/database, bukan karena tidak ditemukan
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not fetch product"})
+		return
+	}
+
+	// INILAH PERBAIKANNYA: Cek apakah produk yang dikembalikan adalah nil
+	if product == nil {
+		// Jika nil, berarti produk tidak ditemukan, kirim 404
 		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
 		return
 	}
 
+	// Jika produk ada, kirim 200 OK dengan data produk
 	c.JSON(http.StatusOK, product)
 }
