@@ -3,12 +3,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import { CartProvider } from './context/CartContext'; // <-- 1. Import Provider
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext'; // <-- 1. Import AuthProvider
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CartProvider> {/* <-- 2. Bungkus App dengan CartProvider */}
-      <App />
-    </CartProvider>
+    <AuthProvider> {/* <-- 2. Bungkus dengan AuthProvider */}
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </AuthProvider>
   </StrictMode>,
 )
