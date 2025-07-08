@@ -1,23 +1,51 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
-// 1. Buat Context
 const CartContext = createContext();
 
-// 2. Buat "Provider" (Penyedia State)
+// Fungsi untuk mengambil data awal dari localStorage
+const getInitialCart = () => {
+  const savedCart = localStorage.getItem('cartItems');
+  return savedCart ? JSON.parse(savedCart) : [];
+};
+
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([]);
+  // Gunakan data dari localStorage sebagai nilai awal state
+  const [cartItems, setCartItems] = useState(getInitialCart);
+
+  // Gunakan useEffect untuk menyimpan ke localStorage setiap kali cartItems berubah
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (product) => {
-    // Logika untuk menambah item ke keranjang
-    // Kita akan membuatnya lebih pintar nanti (misal: cek jika item sudah ada)
-    setCartItems(prevItems => [...prevItems, product]);
+    setCartItems(prevItems => {
+      const exist = prevItems.find(item => item.id === product.id);
+      if (exist) {
+        return prevItems.map(item =>
+          item.id === product.id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
+        );
+      } else {
+        return [...prevItems, { ...product, quantity: 1 }];
+      }
+    });
     alert(`${product.name} telah ditambahkan ke keranjang!`);
   };
 
-  const value = {
-    cartItems,
-    addToCart,
+
+  const removeFromCart = (productId) => {
+    setCartItems(prevItems => {
+      // Buat array baru yang berisi semua item KECUALI yang ID-nya cocok
+      return prevItems.filter(item => item.id !== productId);
+    });
   };
+
+  const clearCart = () => {
+    setCartItems([]);
+    // Juga hapus dari localStorage
+    localStorage.removeItem('cartItems');
+  };
+
+  const value = { cartItems, addToCart, removeFromCart, clearCart };
 
   return (
     <CartContext.Provider value={value}>
@@ -26,7 +54,6 @@ export function CartProvider({ children }) {
   );
 }
 
-// 3. Buat Custom Hook untuk mempermudah penggunaan
 export function useCart() {
   return useContext(CartContext);
 }
