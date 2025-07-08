@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage'; // <-- Tambahkan import ini
 import Navbar from './components/Navbar';
 import ProductDetailPage from './pages/ProductDetailPage';
+import CartPage from './pages/CartPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/produk" element={<ProductListPage />} />
           <Route path="/produk/:id" element={<ProductDetailPage />} /> {/* <-- TAMBAHKAN INI */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/keranjang" element={<CartPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </main>
