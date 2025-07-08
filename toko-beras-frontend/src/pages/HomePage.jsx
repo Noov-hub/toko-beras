@@ -1,4 +1,4 @@
 function HomePage() {
-  return <h1>Selamat Datang di Toko Beras!</h1>;
+  return <h1>biar apa?</h1>;
 }
 export default HomePage;
