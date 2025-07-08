@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import './ProductCard.css'; // Kita akan buat file CSS ini nanti
 
 const API_URL = 'http://localhost:8080';
+// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 
 function ProductCard({ product }) {
   return (

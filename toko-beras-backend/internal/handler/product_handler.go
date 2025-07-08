@@ -87,3 +87,21 @@ func (h *ProductHandler) GetAllProducts(c *gin.Context) {
 
 	c.JSON(http.StatusOK, products)
 }
+
+func (h *ProductHandler) GetProductByID(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid product ID"})
+		return
+	}
+
+	product, err := h.ProductRepo.GetProductByID(c.Request.Context(), id)
+	if err != nil {
+		// Nanti kita bisa bedakan error 'not found' dengan error server
+		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, product)
+}

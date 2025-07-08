@@ -48,4 +48,16 @@ func (r *ProductRepository) GetAllProducts() ([]model.Product, error) {
 
 	return products, nil
 }
+
+func (r *ProductRepository) GetProductByID(ctx context.Context, id int) (*model.Product, error) {
+	var p model.Product
+	sql := `SELECT id, name, description, category, price, stock, image_url, created_at FROM products WHERE id = $1`
+
+	err := r.DB.QueryRow(ctx, sql, id).Scan(&p.ID, &p.Name, &p.Description, &p.Category, &p.Price, &p.Stock, &p.ImageURL, &p.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &p, nil
+}
+
 // Note: Fungsi untuk GetByID, Update, dan Delete bisa ditambahkan dengan pola yang sama.

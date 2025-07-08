@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ProductListPage.css';
+import ProductCard from '../components/ProductCard';
 // Definisikan URL API backend Anda
-// const API_URL = 'http://localhost:8080';
-const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
+const API_URL = 'http://localhost:8080';
+// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 function ProductListPage() {
   // Siapkan state untuk menampung data produk dan status loading
   const [products, setProducts] = useState([]);
@@ -39,13 +40,7 @@ function ProductListPage() {
       <div className="product-grid">
         {/* Kita akan petakan (map) data produk di sini */}
           {products.map(product => (
-            <div key={product.id} className="product-card">
-              {/* GABUNGKAN ALAMAT BACKEND DENGAN PATH GAMBAR */}
-              <img src={`${API_URL}${product.image_url}`} alt={product.name} />
-              <h3>{product.name}</h3>
-              <p>Kategori: {product.category}</p>
-              <p className="price">Rp {product.price.toLocaleString('id-ID')}</p>
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
       </div>
     </div>

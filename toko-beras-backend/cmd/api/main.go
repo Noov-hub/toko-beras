@@ -36,7 +36,8 @@ func main() {
 	// Setup Gin router
 	router := gin.Default()
 	router.Use(cors.Default())
-
+	router.GET("/products", productHandler.GetAllProducts)
+	router.GET("/products/:id", productHandler.GetProductByID)
 	// Ini memberitahu Gin: "Jika ada permintaan ke URL yang diawali dengan /uploads,
     // cari filenya di dalam direktori fisik ./uploads di server."
     router.Static("/uploads", "./uploads")
@@ -52,6 +53,7 @@ func main() {
 	apiRoutes := router.Group("/api")
 
 	apiRoutes.GET("/products", productHandler.GetAllProducts)
+	apiRoutes.GET("/products/:id", productHandler.GetProductByID)
 	apiRoutes.Use(middleware.AuthMiddleware())
 	{
 		// Rute untuk Order
