@@ -16,7 +16,7 @@ function ProductListPage() {
     const fetchProducts = async () => {
       try {
         // Panggil endpoint publik untuk mendapatkan semua produk
-        const response = await axios.get(`${API_URL}/api/products`);
+        const response = await axios.get(`${API_URL}/products`);
         setProducts(response.data || []); // Simpan data ke state
       } catch (err) {
         setError('Gagal memuat data produk.');
