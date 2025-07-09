@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/authApi'; // Import fungsi API
 import { useAuth } from '../context/AuthContext';
 
@@ -8,8 +8,10 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
 
+  const from = location.state?.from?.pathname || "/";
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -19,7 +21,7 @@ function LoginPage() {
       if (data.token) {
         login(data.token);
         alert('Login berhasil!');
-        navigate('/'); // Arahkan ke Halaman Utama setelah berhasil
+        navigate(from, { replace: true }); // Arahkan ke Halaman Utama setelah berhasil
         // Anda bisa juga me-refresh halaman untuk memperbarui state aplikasi
         window.location.reload();
       }
