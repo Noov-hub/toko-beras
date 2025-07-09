@@ -69,4 +69,34 @@ func (r *ProductRepository) GetProductByID(ctx context.Context, id int) (*model.
 	return &p, nil
 }
 
+// DeleteProduct menghapus produk dari database berdasarkan ID
+func (r *ProductRepository) DeleteProduct(ctx context.Context, id int) error {
+	sql := `DELETE FROM products WHERE id = $1`
+
+	// Exec digunakan karena kita tidak mengharapkan baris data kembali
+	_, err := r.DB.Exec(ctx, sql, id)
+	if err != nil {
+		return fmt.Errorf("repository: gagal menghapus produk: %w", err)
+	}
+
+	return nil
+}
+
+// UpdateProduct memperbarui data produk di database
+func (r *ProductRepository) UpdateProduct(ctx context.Context, product *model.Product) error {
+    // Query ini sekarang juga mengupdate image_url
+    sql := `UPDATE products 
+            SET name = $1, description = $2, category = $3, price = $4, stock = $5, image_url = $6
+            WHERE id = $7`
+
+    _, err := r.DB.Exec(ctx, sql,
+        product.Name, product.Description, product.Category, product.Price, product.Stock, product.ImageURL, product.ID,
+    )
+
+    if err != nil {
+        return fmt.Errorf("repository: gagal memperbarui produk: %w", err)
+    }
+    return nil
+} 
+
 // Note: Fungsi untuk GetByID, Update, dan Delete bisa ditambahkan dengan pola yang sama.
