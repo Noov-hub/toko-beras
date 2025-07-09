@@ -5,10 +5,15 @@ import './CartPage.css';
 const API_URL = 'http://localhost:8080';
 
 function CartPage() {
-  const { cartItems, removeFromCart } = useCart();
+  const { cartItems, removeFromCart, addToCart, decreaseQuantity } = useCart();
+
 
   // Hitung total harga
-  const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
+  // Hitung total harga dengan memperhitungkan kuantitas
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   if (cartItems.length === 0) {
     return (
@@ -23,20 +28,27 @@ function CartPage() {
     <div className="cart-container">
       <h1>Keranjang Belanja Anda</h1>
       <ul className="cart-items">
-        {cartItems.map((item, index) => (
-          <li key={`${item.id}-${index}`} className="cart-item">
+        {cartItems.map((item) => (
+          // Gunakan item.id sebagai key karena sekarang unik
+          <li key={item.id} className="cart-item">
             <img src={`${API_URL}${item.image_url}`} alt={item.name} />
             <div className="item-info">
               <h4>{item.name}</h4>
               <p>Rp {item.price.toLocaleString('id-ID')}</p>
+              
+              {/* --- Tombol Kuantitas --- */}
+              <div className="quantity-controls">
+                <button onClick={() => decreaseQuantity(item.id)}>-</button>
+                <span>{item.quantity}</span>
+                <button onClick={() => addToCart(item)}>+</button>
+              </div>
             </div>
-              <button
+            <button
               onClick={() => removeFromCart(item.id)}
               className="remove-btn"
             >
               Hapus
             </button>
-            {/* Nanti kita bisa tambahkan tombol untuk ubah jumlah atau hapus */}
           </li>
         ))}
       </ul>
