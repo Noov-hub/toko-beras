@@ -1,3 +1,4 @@
+// cmd/api/main.go
 package main
 
 import (
@@ -6,7 +7,7 @@ import (
 	"net/http"
 	"toko-beras/backend/config"
 	"toko-beras/backend/internal/handler"
-	"toko-beras/backend/internal/middleware" // Import middleware
+	"toko-beras/backend/internal/middleware"
 	"toko-beras/backend/internal/repository"
 
 	"github.com/gin-contrib/cors"
@@ -15,7 +16,7 @@ import (
 )
 
 func main() {
-	// ... (kode koneksi database tetap sama)
+	// ... (kode koneksi database dan inisialisasi lapisan tetap sama) ...
 	dbUrl := config.LoadConfig("DB_URL")
 	pool, err := pgxpool.New(context.Background(), dbUrl)
 	if err != nil {
@@ -24,59 +25,61 @@ func main() {
 	defer pool.Close()
 	log.Println("Successfully connected to the database!")
 
-	// Inisialisasi semua lapisan aplikasi
 	userRepo := repository.NewUserRepository(pool)
-	productRepo := repository.NewProductRepository(pool) // <-- Tambahkan ini
+	productRepo := repository.NewProductRepository(pool)
 	orderRepo := repository.NewOrderRepository(pool)
 
 	authHandler := handler.NewAuthHandler(userRepo)
-	productHandler := handler.NewProductHandler(productRepo) // <-- Tambahkan ini
+	productHandler := handler.NewProductHandler(productRepo)
 	orderHandler := handler.NewOrderHandler(orderRepo)
-
-	// Setup Gin router
+	
 	router := gin.Default()
-	router.Use(cors.Default())
-	router.GET("/products", productHandler.GetAllProducts)
-	router.GET("/products/:id", productHandler.GetProductByID)
-	// Ini memberitahu Gin: "Jika ada permintaan ke URL yang diawali dengan /uploads,
-    // cari filenya di dalam direktori fisik ./uploads di server."
+	config := cors.DefaultConfig()
+    config.AllowOrigins = []string{"http://localhost:5173"}
+    config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
+    config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+    router.Use(cors.New(config))
     router.Static("/uploads", "./uploads")
 
-	// Grup rute untuk Autentikasi (Publik)
+	// --- RUTE PUBLIK ---
+	router.GET("/products", productHandler.GetAllProducts)
+    router.GET("/products/:id", productHandler.GetProductByID)
+	// Semua rute di sini bisa diakses tanpa login
+	// publicRoutes := router.Group("/api/public") // Menggunakan prefix baru untuk kejelasan
+	// {
+	// 	publicRoutes.GET("/products", productHandler.GetAllProducts)
+	// 	publicRoutes.GET("/products/:id", productHandler.GetProductByID)
+	// }
+
+	// --- RUTE AUTENTIKASI ---
 	authRoutes := router.Group("/auth")
 	{
 		authRoutes.POST("/register", authHandler.Register)
 		authRoutes.POST("/login", authHandler.Login)
 	}
 
-	productPublicRoutes := router.Group("/api")
+	// --- RUTE PENGGUNA TEROTENTIKASI (Wajib Login) ---
+	protectedRoutes := router.Group("/api")
+	protectedRoutes.Use(middleware.AuthMiddleware())
 	{
-		productPublicRoutes.GET("/products", productHandler.GetAllProducts)
-		productPublicRoutes.GET("/products/:id", productHandler.GetProductByID)
+		protectedRoutes.POST("/orders", orderHandler.CreateOrder)
 	}
 
-	// Grup rute untuk API utama (Terproteksi)
-	apiRoutes := router.Group("/api")
-
-	apiRoutes.Use(middleware.AuthMiddleware())
-	{
-		// Rute untuk Order
-		apiRoutes.POST("/orders", orderHandler.CreateOrder)
-	}
-
-	// Grup rute untuk Admin (Terproteksi)
+	// --- RUTE KHUSUS ADMIN (Wajib Login & Peran Admin) ---
 	adminRoutes := router.Group("/admin")
-	adminRoutes.Use(middleware.AuthMiddleware()) // Penjaga 1: Cek dulu apakah login & token valid
-	adminRoutes.Use(middleware.AdminMiddleware())  // Penjaga 2: LALU, cek apakah dia admin
+	adminRoutes.Use(middleware.AuthMiddleware())
+	adminRoutes.Use(middleware.AdminMiddleware())
 	{
-		// Hanya admin yang bisa mengakses rute-rute ini
 		adminRoutes.POST("/products", productHandler.CreateProduct)
+		adminRoutes.PUT("/products/:id", productHandler.UpdateProduct)
+		adminRoutes.DELETE("/products/:id", productHandler.DeleteProduct)
 	}
-
+	
+	// Rute Ping untuk tes
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
-
+	
 	log.Println("Starting server on port 8080...")
 	router.Run("localhost:8080")
 }
