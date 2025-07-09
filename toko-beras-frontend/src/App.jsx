@@ -9,6 +9,8 @@ import Navbar from './components/Navbar';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
+import AdminDashboardPage from './pages/AdminDashboardPage'; // <-- Import halaman baru
+import AdminRoute from './components/AdminRoute'; // <-- Import komponen proteksi
 
 function App() {
   return (
@@ -23,6 +25,13 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+           {/* Rute Khusus Admin */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+            {/* Rute admin lainnya bisa ditambahkan di sini */}
+          </Route>
+          
         </Routes>
       </main>
     </BrowserRouter>
