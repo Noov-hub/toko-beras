@@ -17,26 +17,48 @@ export function CartProvider({ children }) {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product) => {
-    setCartItems(prevItems => {
-      const exist = prevItems.find(item => item.id === product.id);
-      if (exist) {
-        return prevItems.map(item =>
-          item.id === product.id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
+  const addToCart = (productToAdd) => {
+    setCartItems((prevItems) => {
+      // Cek apakah item sudah ada di keranjang
+      const existingItem = prevItems.find((item) => item.id === productToAdd.id);
+
+      if (existingItem) {
+        // Jika sudah ada, update jumlahnya
+        return prevItems.map((item) =>
+          item.id === productToAdd.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
-      } else {
-        return [...prevItems, { ...product, quantity: 1 }];
       }
+      // Jika belum ada, tambahkan item baru dengan jumlah 1
+      return [...prevItems, { ...productToAdd, quantity: 1 }];
     });
-    alert(`${product.name} telah ditambahkan ke keranjang!`);
   };
 
+  // --- PERUBAHAN 2: Tambah fungsi decreaseQuantity ---
+  const decreaseQuantity = (productId) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === productId);
 
-  const removeFromCart = (productId) => {
-    setCartItems(prevItems => {
-      // Buat array baru yang berisi semua item KECUALI yang ID-nya cocok
-      return prevItems.filter(item => item.id !== productId);
+      // Jika jumlahnya tinggal 1, hapus item dari keranjang
+      if (existingItem.quantity === 1) {
+        return prevItems.filter((item) => item.id !== productId);
+      }
+
+      // Jika lebih dari 1, kurangi jumlahnya
+      return prevItems.map((item) =>
+        item.id === productId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      );
     });
+  };
+
+  
+  const removeFromCart = (productId) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.id !== productId)
+    );
   };
 
   const clearCart = () => {
@@ -44,8 +66,14 @@ export function CartProvider({ children }) {
     // Juga hapus dari localStorage
     localStorage.removeItem('cartItems');
   };
-
-  const value = { cartItems, addToCart, removeFromCart, clearCart };
+  const value = {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    decreaseQuantity,
+    clearCart, // Tambahkan ini
+  };
+  // const value = { cartItems, addToCart, removeFromCart, clearCart };
 
   return (
     <CartContext.Provider value={value}>
