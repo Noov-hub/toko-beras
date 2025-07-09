@@ -4,13 +4,14 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   // Cek localStorage saat aplikasi pertama kali dimuat
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
     }
+    setLoading(false);
   }, []);
 
   const login = (newToken) => {
@@ -24,11 +25,11 @@ export function AuthProvider({ children }) {
   };
 
   // Nilai true jika ada token, false jika tidak ada
-  const isAuthenticated = !!token;
 
   const value = {
     token,
-    isAuthenticated,
+    isAuthenticated: !!token,
+    loading, // <-- 3. Sediakan loading state ke komponen lain
     login,
     logout,
   };
