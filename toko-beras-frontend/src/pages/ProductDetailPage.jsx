@@ -22,7 +22,7 @@ function ProductDetailPage() {
     const fetchProduct = async () => {
       try {
         // TAMBAHKAN /api/ di sini
-        const response = await axios.get(`${API_URL}/api/products/${id}`);
+        const response = await axios.get(`${API_URL}/products/${id}`);
         setProduct(response.data);
       } catch (err) {
         setError('Gagal memuat data produk.');
