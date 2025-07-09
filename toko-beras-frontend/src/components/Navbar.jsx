@@ -26,10 +26,12 @@ function Navbar() {
         <Link to="/keranjang">
           Keranjang ({cartItems.length}) {/* Tampilkan jumlah item */}
         </Link>
-        
+        {/* <Link to="/admin/dashboard">Admin Dashboard</Link> */}
         {/* Tampilkan link berdasarkan status login */}
         {isAuthenticated ? (
-          <button onClick={handleLogout} className="logout-btn">Logout</button>
+          <><button onClick={handleLogout} className="logout-btn">Logout</button><>
+            <Link to="/admin/dashboard">Admin Dashboard</Link>
+          </></>
         ) : (
           <>
             <Link to="/login">Login</Link>
