@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import './index.css'; // Pastikan ini ada untuk mengimpor Tailwind CSS
+import './App.css'; // Impor CSS khusus aplikasi jika ada
 // Import Halaman dan Komponen
 import HomePage from './pages/HomePage';
 import ProductListPage from './pages/ProductListPage';
@@ -16,7 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <main>
+      <main className="bg-gray-50">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/produk" element={<ProductListPage />} />
