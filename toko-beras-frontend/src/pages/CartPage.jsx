@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import './CartPage.css';
 
 const API_URL = 'http://localhost:8080';
+// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 
 function CartPage() {
   const { cartItems, removeFromCart, addToCart, decreaseQuantity } = useCart();
