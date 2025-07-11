@@ -79,6 +79,7 @@ function EditProductModal({ product, onClose, onProductUpdated }) {
           <div className="current-image-container">
             <label>Gambar Saat Ini:</label>
             <img src={`http://localhost:8080${product.image_url}`} alt={product.name} className="product-thumbnail-large" />
+            {/* <img src={`https://7h81qk4k-8080.asse.devtunnels.ms${product.image_url}`} alt={product.name} className="product-thumbnail-large" /> */}
           </div>
           <label>Ganti Gambar (Opsional):</label>
           <input type="file" onChange={(e) => setNewImage(e.target.files[0])} />
