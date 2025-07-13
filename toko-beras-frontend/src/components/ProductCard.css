@@ -36,18 +36,8 @@
     font-weight: bold;
     color: #5b67e8;
 }
-
-.logout-btn {
-  background: none;
-  border: none;
-  color: #555;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 500;
-  cursor: pointer;
-  margin-left: 1.5rem;
-  padding: 0;
-}
-.logout-btn:hover {
-  color: #e53e3e;
+.product-card .description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
 }
