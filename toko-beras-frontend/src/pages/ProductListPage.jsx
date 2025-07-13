@@ -30,14 +30,20 @@ function ProductListPage() {
   }, []); // Array kosong berarti efek ini hanya berjalan sekali
 
   // Tampilkan pesan loading saat data sedang diambil
-  if (loading) return <p>Memuat produk...</p>;
+  if (loading) return (
+    <div className="flex justify-center items-center h-[60vh]">
+      <p className="text-xl text-gray-600">Memuat produk...</p>
+    </div>
+  );
   // Tampilkan pesan error jika terjadi kegagalan
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
     <div className="product-page">
-      <h1>Semua Produk Kami</h1>
-      <div className="product-grid">
+      <div className="product-header text-center m-8 text-bold text-2xl">
+        <h1>Semua Produk Kami</h1>
+      </div>
+      <div className="product-grid md:grid md:grid-cols-3 gap-4 p-4">
         {/* Kita akan petakan (map) data produk di sini */}
           {products.map(product => (
             <ProductCard key={product.id} product={product} />
