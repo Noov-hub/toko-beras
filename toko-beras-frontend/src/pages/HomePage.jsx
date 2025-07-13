@@ -28,14 +28,14 @@ function HomePage() {
     <main>
       {/* 1. Hero Section dengan Latar Belakang */}
       <section 
-        className="relative h-[60vh] bg-cover bg-center flex items-center justify-center"
+        className="relative h-[40vh] bg-cover bg-center flex items-center justify-center max-h-md:md:h-[80vh] md:max-h-lg"
         // Ganti '/images/background-sawah.jpg' dengan path gambar latar Anda
         style={{ backgroundImage: "url('/images/sawah.jpg')" }}
       >
         {/* Overlay untuk membuat teks lebih mudah dibaca */}
         {/* <div className="absolute inset-0 bg-black opacity-50"></div> */}
         
-        <h1 className="relative z-10 text-4xl md:text-6xl font-bold text-black text-center drop-shadow-lg bg-white/20 backdrop-blur-sm px-8 py-4 rounded-lg">
+        <h1 className="relative z-10 text-4xl md:text-6xl font-bold text-black text-center drop-shadow-lg bg-white/20 px-4 py-4 rounded-lg">
           Selamat Datang di Toko Beras Kami!
         </h1>
       </section>
