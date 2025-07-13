@@ -27,3 +27,18 @@
 .navbar-links a:hover {
   color: #5b67e8; /* Warna saat cursor di atas link */
 }
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 1.5rem;
+  padding: 0;
+}
+.logout-btn:hover {
+  color: #e53e3e;
+}
