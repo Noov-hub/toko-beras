@@ -3,8 +3,8 @@ import axios from 'axios';
 // import './ProductListPage.css';
 import ProductCard from '../components/ProductCard';
 // Definisikan URL API backend Anda
-const API_URL = 'http://localhost:8080';
-// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
+// const API_URL = 'http://localhost:8080';
+const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 function ProductListPage() {
   // Siapkan state untuk menampung data produk dan status loading
   const [products, setProducts] = useState([]);
