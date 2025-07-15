@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/auth'; 
-// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms/auth'; 
+// const API_URL = 'http://localhost:8080/auth'; 
+const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms/auth'; 
 
 export const registerUser = async (userData) => {
   // userData adalah objek berisi { name, email, password }
