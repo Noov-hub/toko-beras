@@ -5,8 +5,8 @@ import AddProductModal from '../components/AddProductModal';
 import EditProductModal from '../components/EditProductModal';
 // import './AdminDashboardPage.css'; // Kita akan buat file CSS ini
 
-const API_URL = 'http://localhost:8080';
-// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
+// const API_URL = 'http://localhost:8080';
+const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 
 function AdminDashboardPage() {
   const [products, setProducts] = useState([]);
