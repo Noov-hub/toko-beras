@@ -111,7 +111,8 @@ function EditProductModal({ product, onClose, onProductUpdated }) {
           
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-400">Gambar Saat Ini:</label>
-            <img src={`http://localhost:8080${product.image_url}`} alt={product.name} className="max-h-40 w-auto rounded-md" />
+            {/* <img src={`http://localhost:8080${product.image_url}`} alt={product.name} className="max-h-40 w-auto rounded-md" /> */}
+            <img src={`https://7h81qk4k-8080.asse.devtunnels.ms${product.image_url}`} alt={product.name} className="max-h-40 w-auto rounded-md" />
           </div>
 
           <div>
