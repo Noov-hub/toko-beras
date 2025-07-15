@@ -1,42 +1,56 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect } from "react";
+import { jwtDecode } from "jwt-decode"; // <-- 1. Import pustaka yang baru diinstal
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
+  // --- PERUBAHAN 2: Tambahkan state untuk user ---
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  // Cek localStorage saat aplikasi pertama kali dimuat
+
+  // --- PERUBAHAN 3: Logika untuk mendekode token ---
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
+    try {
+      if (token) {
+        const decodedUser = jwtDecode(token);
+        setUser(decodedUser); // Simpan data user dari token ke state
+      } else {
+        setUser(null); // Jika tidak ada token, pastikan user null
+      }
+    } catch (error) {
+      console.error("Token tidak valid, logout...", error);
+      setUser(null); // Hapus user jika token rusak
+      localStorage.removeItem("token");
+      setToken(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [token]); // Efek ini akan berjalan setiap kali token berubah
 
   const login = (newToken) => {
-    localStorage.setItem('token', newToken);
-    setToken(newToken);
+    localStorage.setItem("token", newToken);
+    setToken(newToken); // Mengatur token akan memicu useEffect di atas
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
+    localStorage.removeItem("token");
+    setToken(null); // Menghapus token akan memicu useEffect di atas
   };
 
-  // Nilai true jika ada token, false jika tidak ada
-
+  // --- PERUBAHAN 4: Tambahkan 'user' ke dalam value ---
   const value = {
     token,
+    user, // Sediakan data user ke komponen lain
     isAuthenticated: !!token,
-    loading, // <-- 3. Sediakan loading state ke komponen lain
+    loading,
     login,
     logout,
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }
