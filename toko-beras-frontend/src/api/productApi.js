@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080';
-// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
+// const API_URL = 'http://localhost:8080';
+const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 
 // =======================================================
 // BAGIAN PUBLIK (Tidak Perlu /api atau /admin)
