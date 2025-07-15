@@ -7,8 +7,8 @@ const formatRupiah = (number) => {
     minimumFractionDigits: 0,
   }).format(number);
 };
-const API_URL = 'http://localhost:8080';
-// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
+// const API_URL = 'http://localhost:8080';
+const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 function ProductCard({ product }) {
   return (
     <Link to={`/produk/${product.id}`} className="block group">
