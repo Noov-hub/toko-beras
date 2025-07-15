@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useCart } from '../context/CartContext'; 
 import { useAuth } from '../context/AuthContext';
 
-const API_URL = 'http://localhost:8080';
-// const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
+// const API_URL = 'http://localhost:8080';
+const API_URL = 'https://7h81qk4k-8080.asse.devtunnels.ms';
 
 const formatRupiah = (number) => {
   return new Intl.NumberFormat('id-ID', {
